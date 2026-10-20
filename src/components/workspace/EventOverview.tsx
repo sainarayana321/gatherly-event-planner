@@ -57,7 +57,7 @@ export const EventOverview: React.FC<EventOverviewProps> = ({ onNavigateTab }) =
 
   const budgetPercent = activeEvent.totalBudget > 0
     ? (budgetSummary.totalPlanned / activeEvent.totalBudget) * 100
-    : 0;
+    : (budgetSummary.totalPlanned > 0 ? 100 : 0);
 
   const handleStartEdit = () => {
     setEditName(activeEvent.name);

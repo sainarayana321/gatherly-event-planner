@@ -43,6 +43,7 @@ export const BudgetPlanner: React.FC = () => {
 
   // Inline edit state
   const [editName, setEditName] = useState('');
+  const [editCategory, setEditCategory] = useState<BudgetCategory>('catering');
   const [editPlanned, setEditPlanned] = useState('');
   const [editActual, setEditActual] = useState('');
   const [editNotes, setEditNotes] = useState('');
@@ -67,6 +68,7 @@ export const BudgetPlanner: React.FC = () => {
   const handleStartEdit = (item: BudgetItem) => {
     setEditingId(item.id);
     setEditName(item.name);
+    setEditCategory(item.category);
     setEditPlanned(String(item.plannedAmount));
     setEditActual(String(item.actualAmount));
     setEditNotes(item.notes || '');
@@ -78,6 +80,7 @@ export const BudgetPlanner: React.FC = () => {
 
     updateBudgetItem(id, {
       name: editName.trim() || 'Expense Item',
+      category: editCategory,
       plannedAmount: planned,
       actualAmount: actual,
       notes: editNotes.trim() || undefined,
@@ -453,7 +456,15 @@ export const BudgetPlanner: React.FC = () => {
                           />
                         </td>
                         <td className="py-3 px-4 text-xs text-stone-muted">
-                          {CATEGORY_NAMES[item.category]}
+                          <select
+                            value={editCategory}
+                            onChange={(e) => setEditCategory(e.target.value as BudgetCategory)}
+                            className="text-xs bg-white border border-stone-border rounded p-1"
+                          >
+                            {Object.entries(CATEGORY_NAMES).map(([k, label]) => (
+                              <option key={k} value={k}>{label}</option>
+                            ))}
+                          </select>
                         </td>
                         <td className="py-3 px-4 text-right">
                           <input
@@ -473,8 +484,18 @@ export const BudgetPlanner: React.FC = () => {
                             className="w-24 text-xs bg-white border border-stone-border rounded p-1 text-right"
                           />
                         </td>
-                        <td className="py-3 px-4 text-right text-xs text-stone-muted">
-                          Calculating...
+                        <td className="py-3 px-4 text-right text-xs">
+                          {(() => {
+                            const livePlanned = normalizeAmount(editPlanned);
+                            const liveActual = normalizeAmount(editActual);
+                            const liveDiff = livePlanned - liveActual;
+                            return (
+                              <span className={liveDiff < 0 ? 'text-rose-600 font-semibold' : 'text-stone-muted'}>
+                                {liveDiff < 0 ? '-' : '+'}
+                                {formatCurrency(Math.abs(liveDiff), currency)}
+                              </span>
+                            );
+                          })()}
                         </td>
                         <td className="py-3 px-4 sm:px-6 text-right">
                           <div className="flex items-center justify-end gap-1">

@@ -258,7 +258,7 @@ export const TimelineView: React.FC = () => {
             No milestones planned yet. Click "Add Milestone" or "Recalculate Dates" to populate your timeline!
           </div>
         ) : (
-          activeEvent.timeline.map((item, idx) => {
+          activeEvent.timeline.map((item) => {
             const daysLeft = getDaysUntil(item.dueDate);
             const isOverdue = !item.completed && daysLeft < 0;
             const isDueToday = !item.completed && daysLeft === 0;

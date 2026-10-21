@@ -146,3 +146,4 @@ npx netlify deploy --prod --dir=dist
 
 ## 📄 License
 MIT © 2026 Gatherly Team. Crafted with care for Prompt Wars Challenge 5.
+"# gatherly-event-planner" 

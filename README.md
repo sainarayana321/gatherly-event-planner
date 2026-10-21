@@ -11,6 +11,14 @@
 
 ---
 
+## 🎥 Demo Video & Live Walkthrough
+
+- **Demo Video Link**: [Watch the Gatherly Walkthrough](https://youtu.be/placeholder-demo-video) *(Replace with your YouTube / Loom / Drive recording link)*
+- **GitHub Repository**: [https://github.com/sainarayana321/gatherly-event-planner](https://github.com/sainarayana321/gatherly-event-planner)
+- **Live Deployment**: `https://your-firebase-project-id.web.app`
+
+---
+
 ## 🎯 Problem Statement Alignment & Core Features
 
 | Requirement | Implementation Detail in Gatherly | Verified |

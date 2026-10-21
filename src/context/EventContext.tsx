@@ -488,9 +488,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         })
       );
       setAiStatusMessage(result.summary);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      setAiStatusMessage('Unable to complete assistance refresh: ' + message);
+    } catch (err: any) {
+      setAiStatusMessage('Unable to complete assistance refresh: ' + err.message);
     } finally {
       setIsAiLoading(false);
     }
@@ -499,41 +498,39 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Apply an idea to planner
   const applyIdeaToPlanner = useCallback((idea: PersonalizedIdea): boolean => {
     if (!idea.actionableImport || !activeEvent) return false;
+    const { type, item } = idea.actionableImport;
 
-    if (idea.actionableImport.type === 'budget') {
-      const item = idea.actionableImport.item;
+    if (type === 'budget' && item) {
       addBudgetItem({
-        category: item.category || 'misc',
-        name: item.name || idea.title,
-        plannedAmount: item.plannedAmount ?? 150,
-        actualAmount: item.actualAmount ?? 0,
-        notes: item.notes || idea.description,
+        category: (item as any).category || 'misc',
+        name: (item as any).name || idea.title,
+        plannedAmount: (item as any).plannedAmount || 150,
+        actualAmount: (item as any).actualAmount || 0,
+        notes: (item as any).notes || idea.description,
       });
       return true;
     }
 
-    if (idea.actionableImport.type === 'timeline') {
-      const item = idea.actionableImport.item;
+    if (type === 'timeline' && item) {
       addMilestone({
-        title: item.title || idea.title,
-        description: item.description || idea.description,
-        dueDate: item.dueDate || activeEvent.date,
-        category: item.category || 'coordination',
-        completed: item.completed ?? false,
-        priority: item.priority || 'medium',
+        title: (item as any).title || idea.title,
+        description: (item as any).description || idea.description,
+        dueDate: (item as any).dueDate || activeEvent.date,
+        category: (item as any).category || 'coordination',
+        completed: false,
+        priority: (item as any).priority || 'medium',
       });
       return true;
     }
 
-    if (idea.actionableImport.type === 'vendor') {
-      const item = idea.actionableImport.item;
+    if (type === 'vendor' && item) {
       addVendorItem({
-        category: item.category || 'misc',
-        title: item.title || idea.title,
-        vendorName: item.vendorName,
-        estimatedCost: item.estimatedCost ?? 150,
-        status: item.status || 'not_started',
-        notes: item.notes || idea.description,
+        category: (item as any).category || 'misc',
+        title: (item as any).title || idea.title,
+        vendorName: (item as any).vendorName || undefined,
+        estimatedCost: (item as any).estimatedCost || 150,
+        status: (item as any).status || 'not_started',
+        notes: (item as any).notes || idea.description,
       });
       return true;
     }

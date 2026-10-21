@@ -68,18 +68,16 @@ export type IdeaCategory =
   | 'guest_experience'
   | 'priorities';
 
-export type ActionableImport =
-  | { type: 'budget'; item: Partial<BudgetItem> }
-  | { type: 'timeline'; item: Partial<TimelineMilestone> }
-  | { type: 'vendor'; item: Partial<VendorChecklistItem> };
-
 export interface PersonalizedIdea {
   id: string;
   category: IdeaCategory;
   title: string;
   description: string;
   estimatedImpact?: 'High Impact' | 'Cost Saver' | 'Crowd Pleaser' | 'Essential';
-  actionableImport?: ActionableImport;
+  actionableImport?: {
+    type: 'budget' | 'timeline' | 'vendor';
+    item: Partial<BudgetItem> | Partial<TimelineMilestone> | Partial<VendorChecklistItem>;
+  };
 }
 
 export interface EventPlan {

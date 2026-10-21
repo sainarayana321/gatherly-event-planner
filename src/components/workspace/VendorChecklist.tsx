@@ -293,9 +293,8 @@ export const VendorChecklist: React.FC = () => {
             <Filter className="w-4 h-4 text-stone-muted" />
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-muted">Status:</span>
             <select
-              aria-label="Filter vendors by status"
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value as VendorStatus | 'all')}
+              onChange={(e) => setFilterStatus(e.target.value as any)}
               className="text-xs bg-white border border-stone-border rounded-lg px-2.5 py-1 font-medium focus:ring-2 focus:ring-gold-400"
             >
               <option value="all">All Statuses ({totalItems})</option>
@@ -309,9 +308,8 @@ export const VendorChecklist: React.FC = () => {
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold uppercase tracking-wider text-stone-muted">Category:</span>
             <select
-              aria-label="Filter vendors by category"
               value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value as VendorCategory | 'all')}
+              onChange={(e) => setFilterCategory(e.target.value as any)}
               className="text-xs bg-white border border-stone-border rounded-lg px-2.5 py-1 font-medium focus:ring-2 focus:ring-gold-400"
             >
               <option value="all">All Categories</option>
@@ -364,9 +362,8 @@ export const VendorChecklist: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <select
-                      aria-label="Edit vendor status"
                       value={editStatus}
-                      onChange={(e) => setEditStatus(e.target.value as VendorStatus)}
+                      onChange={(e) => setEditStatus(e.target.value as any)}
                       className="text-xs bg-white border border-stone-border rounded p-1.5"
                     >
                       <option value="not_started">Not Started</option>
@@ -375,9 +372,8 @@ export const VendorChecklist: React.FC = () => {
                       <option value="completed">Completed</option>
                     </select>
                     <select
-                      aria-label="Edit vendor category"
                       value={editCategory}
-                      onChange={(e) => setEditCategory(e.target.value as VendorCategory)}
+                      onChange={(e) => setEditCategory(e.target.value as any)}
                       className="text-xs bg-white border border-stone-border rounded p-1.5"
                     >
                       {Object.entries(VENDOR_CATEGORY_LABELS).map(([k, label]) => (
@@ -461,7 +457,6 @@ export const VendorChecklist: React.FC = () => {
 
                   <div className="flex items-center gap-2">
                     <select
-                      aria-label="Update vendor status"
                       value={item.status}
                       onChange={(e) => updateVendorItem(item.id, { status: e.target.value as VendorStatus })}
                       className="text-xs bg-cream-100 border border-stone-border rounded-lg px-2 py-1 font-medium text-stone-dark focus:ring-2 focus:ring-gold-400"

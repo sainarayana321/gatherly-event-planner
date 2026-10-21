@@ -396,9 +396,8 @@ export const BudgetPlanner: React.FC = () => {
               Filter by Category:
             </span>
             <select
-              aria-label="Filter expenses by category"
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value as BudgetCategory | 'all')}
+              onChange={(e) => setSelectedCategory(e.target.value as any)}
               className="text-xs bg-white border border-stone-border rounded-lg px-2.5 py-1 font-medium focus:ring-2 focus:ring-gold-400"
             >
               <option value="all">All Categories ({activeEvent.budgetItems.length})</option>
@@ -458,7 +457,6 @@ export const BudgetPlanner: React.FC = () => {
                         </td>
                         <td className="py-3 px-4 text-xs text-stone-muted">
                           <select
-                            aria-label="Edit expense category"
                             value={editCategory}
                             onChange={(e) => setEditCategory(e.target.value as BudgetCategory)}
                             className="text-xs bg-white border border-stone-border rounded p-1"

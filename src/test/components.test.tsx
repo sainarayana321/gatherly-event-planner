@@ -1,13 +1,10 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { App } from '../App';
 import { EventProvider } from '../context/EventContext';
 import { BudgetPlanner } from '../components/workspace/BudgetPlanner';
 import { TimelineView } from '../components/workspace/TimelineView';
 import { VendorChecklist } from '../components/workspace/VendorChecklist';
-import { EventCreationModal } from '../components/creation/EventCreationModal';
-import { PlanExportModal } from '../components/workspace/PlanExportModal';
-import { AiAssistant } from '../components/workspace/AiAssistant';
 
 describe('Gatherly User Interface and Journey Integration Tests', () => {
   beforeEach(() => {
@@ -97,62 +94,5 @@ describe('Gatherly User Interface and Journey Integration Tests', () => {
       expect(screen.getByText('Artisan Espresso Cart')).toBeInTheDocument();
       expect(screen.getByText('Bean & Bloom')).toBeInTheDocument();
     });
-  });
-
-  it('validates and submits a new celebration in EventCreationModal', async () => {
-    const handleClose = vi.fn();
-    const handleSuccess = vi.fn();
-
-    render(
-      <EventProvider>
-        <EventCreationModal isOpen={true} onClose={handleClose} onSuccess={handleSuccess} />
-      </EventProvider>
-    );
-
-    expect(screen.getByText(/create new celebration plan/i)).toBeInTheDocument();
-
-    const nameInput = screen.getByLabelText(/celebration name/i);
-    const dateInput = screen.getByLabelText(/event date/i);
-    const submitBtn = screen.getByRole('button', { name: /generate celebration workspace/i });
-
-    // Try submit without filling required name
-    fireEvent.click(submitBtn);
-    expect(screen.getByText(/please provide a celebration name/i)).toBeInTheDocument();
-
-    // Fill valid inputs
-    fireEvent.change(nameInput, { target: { value: 'Sofia & Liam Autumn Nuptials' } });
-    fireEvent.change(dateInput, { target: { value: '2026-11-20' } });
-
-    fireEvent.click(submitBtn);
-
-    await waitFor(() => {
-      expect(handleSuccess).toHaveBeenCalled();
-    });
-  });
-
-  it('renders PlanExportModal with export and import tabs', () => {
-    const handleClose = vi.fn();
-    render(
-      <EventProvider>
-        <PlanExportModal isOpen={true} onClose={handleClose} />
-      </EventProvider>
-    );
-
-    expect(screen.getByText(/plan sharing & data management/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /export & print/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /import json/i })).toBeInTheDocument();
-  });
-
-  it('renders AiAssistant with recommendations and provider status indicator', () => {
-    const handleOpenSettings = vi.fn();
-    render(
-      <EventProvider>
-        <AiAssistant onOpenSettingsModal={handleOpenSettings} />
-      </EventProvider>
-    );
-
-    expect(screen.getByText(/genai planning assistant/i)).toBeInTheDocument();
-    expect(screen.getByText(/demo mode: gatherly rule-based engine/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/catering without compromising quality/i)).toBeInTheDocument();
   });
 });

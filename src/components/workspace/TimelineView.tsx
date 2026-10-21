@@ -217,7 +217,7 @@ export const TimelineView: React.FC = () => {
                 <select
                   id="milestone-priority"
                   value={newPriority}
-                  onChange={(e) => setNewPriority(e.target.value as 'high' | 'medium' | 'low')}
+                  onChange={(e) => setNewPriority(e.target.value as any)}
                   className="w-full text-xs bg-white border border-stone-border rounded-lg px-3 py-2 focus:ring-2 focus:ring-gold-400"
                 >
                   <option value="high">High Priority</option>

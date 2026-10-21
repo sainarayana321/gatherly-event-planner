@@ -11,11 +11,11 @@
 
 ---
 
-## 🎥 Demo Video & Live Walkthrough
+## 🚀 Live Links & Project Assets
 
-- **Demo Video Link**: [Watch the Gatherly Walkthrough](https://youtu.be/placeholder-demo-video) *(Replace with your YouTube / Loom / Drive recording link)*
+- **Live Public Deployment**: [https://gatherly-event-planner.web.app](https://gatherly-event-planner.web.app)
 - **GitHub Repository**: [https://github.com/sainarayana321/gatherly-event-planner](https://github.com/sainarayana321/gatherly-event-planner)
-- **Live Deployment**: `https://your-firebase-project-id.web.app`
+- **Demo Video Walkthrough**: *(Recording link can be pasted here)*
 
 ---
 

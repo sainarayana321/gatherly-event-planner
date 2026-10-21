@@ -15,7 +15,7 @@ export interface AiGenerationResult {
 /**
  * Extracts JSON content safely from model response text (strips markdown code fences).
  */
-function extractJson(text: string): any {
+function extractJson(text: string): unknown {
   let cleaned = text.trim();
   if (cleaned.startsWith('```json')) {
     cleaned = cleaned.replace(/^```json\s*/, '').replace(/\s*```$/, '');
@@ -131,18 +131,18 @@ Provide exactly 5 diverse, high-value ideas across different categories. Note: A
       throw new Error('Gemini API returned empty text candidate');
     }
 
-    const parsed = extractJson(rawText);
+    const parsed = extractJson(rawText) as { summary?: string; ideas?: Array<Record<string, unknown>> } | null;
 
     if (!parsed || !Array.isArray(parsed.ideas)) {
       throw new Error('Gemini output could not be parsed into valid ideas schema');
     }
 
-    const ideas: PersonalizedIdea[] = parsed.ideas.map((item: any, idx: number) => ({
-      id: item.id || `gemini-idea-${idx + 1}-${Date.now()}`,
-      category: item.category || 'guest_experience',
+    const ideas: PersonalizedIdea[] = parsed.ideas.map((item, idx: number) => ({
+      id: typeof item.id === 'string' ? item.id : `gemini-idea-${idx + 1}-${Date.now()}`,
+      category: (item.category as PersonalizedIdea['category']) || 'guest_experience',
       title: String(item.title || 'Event Recommendation'),
       description: String(item.description || ''),
-      estimatedImpact: item.estimatedImpact || 'High Impact',
+      estimatedImpact: (item.estimatedImpact as PersonalizedIdea['estimatedImpact']) || 'High Impact',
     }));
 
     return {
@@ -151,8 +151,9 @@ Provide exactly 5 diverse, high-value ideas across different categories. Note: A
       summary: parsed.summary || `Live GenAI plan produced by Gemini 1.5 Flash for ${event.name}.`,
       ideas,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.warn('Gemini API failed or timed out, gracefully falling back to rule-based engine:', error);
+    const errorMsg = error instanceof Error ? error.message : String(error || 'Connection unavailable');
 
     const fallbackIdeas = generatePersonalizedIdeas(
       event.type,
@@ -164,9 +165,9 @@ Provide exactly 5 diverse, high-value ideas across different categories. Note: A
     return {
       provider: 'rule_based',
       isFallback: true,
-      summary: `Fallback Planning Engine activated. (Live API Notice: ${error?.message || 'Connection unavailable'}). Displaying reliable rule-based suggestions.`,
+      summary: `Fallback Planning Engine activated. (Live API Notice: ${errorMsg}). Displaying reliable rule-based suggestions.`,
       ideas: fallbackIdeas,
-      errorMessage: error?.message || 'Live Gemini request could not be completed.',
+      errorMessage: errorMsg,
     };
   }
 }
